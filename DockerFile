@@ -1,0 +1,8 @@
+FROM maven:3.8.6-openjdk-20 AS build
+COPY ..
+RUN mvn clean package -DskipTests
+
+FROM openjdk:20-jdk-slim
+COPY --from=build /target/work_Project-0.0.1-SNAPSHOT.jar work_Project.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","work_Project.jar"]
